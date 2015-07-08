@@ -53,22 +53,23 @@ PATH=$PATH:$build_dir/vendor/node/bin
 
 # Run subsequent node/npm commands from the build path
 cd $build_dir
-
+rm -rf node_modules
 # If node_modules directory is checked into source control then
 # rebuild any native deps. Otherwise, restore from the build cache.
-if test -d $build_dir/node_modules; then
+# if test -d $build_dir/node_modules; then
   status "Using existing node_modules directory"
   status "Rebuilding any native dependencies"
   npm rebuild 2>&1 | indent
-elif test -d $cache_dir/node_modules; then
-  status "Restoring node_modules from cache"
-  cp -r $cache_dir/node_modules $build_dir/
-fi
+# elif test -d $cache_dir/node_modules; then
+  # status "Restoring node_modules from cache"
+  # cp -r $cache_dir/node_modules $build_dir/
+# fi
 
 status "Installing StrongLoop dependencies"
-npm install -g strongloop
+#npm install -g strongloop
 # Make npm output to STDOUT instead of its default STDERR
 status "Installing dependencies"
+
 npm install --production 2>&1 | indent
 
 status "Pruning unused dependencies"
